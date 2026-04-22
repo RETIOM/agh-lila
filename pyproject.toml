@@ -1,0 +1,9 @@
+[project]
+name = "agh-lila"
+version = "0.1.0"
+description = "LILA - Light Intermediate Language Architecture"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "ply>=3.11",
+]
