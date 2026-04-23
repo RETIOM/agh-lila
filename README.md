@@ -1,4 +1,4 @@
-# LILA - Light Intermediate Language Architecture
+# LILA - Light Intermediate Language Architect
 - Tomasz Idźkowski - idzkowskit@student.agh.edu.pl
 - Maksymilian Koleśniak - mkolesniak@student.agh.edu.pl
 
