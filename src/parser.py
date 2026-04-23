@@ -1,6 +1,22 @@
 import ply.yacc as yacc
 from src.tokens import tokens
 
+precedence = (
+    ('right', 'ASSIGN', 'ADD_ASSIGN', 'SUB_ASSIGN', 'MUL_ASSIGN', 'DIV_ASSIGN', 'MOD_ASSIGN'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'BIT_OR'),
+    ('left', 'BIT_XOR'),
+    ('left', 'BIT_AND'),
+    ('left', 'EQ', 'NEQ'),
+    ('left', 'LT', 'GT', 'LE', 'GE'),
+    ('left', 'LSHIFT', 'RSHIFT'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE', 'MOD'),
+    ('right', 'UMINUS', 'NOT', 'BIT_NOT', 'USTAR', 'UAMP'),
+    ('left', 'INC', 'DEC'),
+)
+
 def p_program(p):
     '''program : declaration_list'''
 
