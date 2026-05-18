@@ -7,3 +7,31 @@ requires-python = ">=3.14"
 dependencies = [
     "ply>=3.11",
 ]
+[project]
+name = "agh-lila"
+version = "0.1.0"
+description = "LILA - Light Intermediate Language Architecture"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "ply>=3.11",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[project.scripts]
+lila = "lila.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
