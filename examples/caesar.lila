@@ -1,0 +1,28 @@
+fn main() -> int {
+    char msg[6];
+    msg[0] = 'h';
+    msg[1] = 'e';
+    msg[2] = 'l';
+    msg[3] = 'l';
+    msg[4] = 'o';
+    msg[5] = '!';
+
+    int shift = 3;
+
+    for int i in 0..6 {
+        int c = msg[i] as int;
+        if c < ('a' as int) {
+            print(msg[i]);
+            continue;
+        }
+        if c > ('z' as int) {
+            print(msg[i]);
+            continue;
+        }
+        int shifted = ((c - ('a' as int) + shift) % 26) + ('a' as int);
+        msg[i] = shifted as char;
+        print(msg[i]);
+    }
+    println("");
+    return 0;
+}

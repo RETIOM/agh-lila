@@ -1,0 +1,23 @@
+fn main() -> int {
+    int xs[10];
+    xs[0] = 3; xs[1] = 1; xs[2] = 4; xs[3] = 1; xs[4] = 5;
+    xs[5] = 9; xs[6] = 2; xs[7] = 6; xs[8] = 5; xs[9] = 3;
+
+    int out[10];
+    int kept = 0;
+    int last = xs[0];
+    out[0] = last;
+    kept = 1;
+
+    for int i in 1..10 {
+        if xs[i] < last { continue; }
+        out[kept] = xs[i];
+        kept = kept + 1;
+        last = xs[i];
+    }
+
+    for int i in 0..kept {
+        println(out[i]);
+    }
+    return 0;
+}

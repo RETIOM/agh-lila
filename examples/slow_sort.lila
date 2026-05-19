@@ -1,0 +1,23 @@
+fn slow_sort_range(int xs[6], int i, int j) -> void {
+    if i >= j { return; }
+    int m = (i + j) / 2;
+    slow_sort_range(xs, i, m);
+    slow_sort_range(xs, m + 1, j);
+    if xs[j] < xs[m] {
+        int t = xs[j];
+        xs[j] = xs[m];
+        xs[m] = t;
+    }
+    slow_sort_range(xs, i, j - 1);
+    return;
+}
+
+fn main() -> int {
+    int xs[6];
+    xs[0] = 4; xs[1] = 2; xs[2] = 6; xs[3] = 1; xs[4] = 5; xs[5] = 3;
+    slow_sort_range(xs, 0, 5);
+    for int i in 0..6 {
+        println(xs[i]);
+    }
+    return 0;
+}
