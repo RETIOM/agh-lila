@@ -79,7 +79,7 @@ def _write(text: str, output: str | None, default_ext: str, src_path: Path) -> i
     if output == "-":
         sys.stdout.write(text)
         return 0
-    out = output or str(src_path.with_suffix(default_ext))
+    out = output or src_path.with_suffix(default_ext).name
     Path(out).write_text(text)
     return 0
 
@@ -116,7 +116,7 @@ def _format_ast(node, indent: int) -> str:
 
 
 def _emit_obj(ir: str, output: str | None, src_path: Path) -> int:
-    out = output or str(src_path.with_suffix(".o"))
+    out = output or src_path.with_suffix(".o").name
     r = subprocess.run(
         ["llc", "-filetype=obj", "-o", out, "-"],
         input=ir,
@@ -130,7 +130,7 @@ def _emit_obj(ir: str, output: str | None, src_path: Path) -> int:
 
 
 def _emit_exe(ir: str, output: str | None, src_path: Path, keep: bool) -> int:
-    out = output or str(src_path.with_suffix(""))
+    out = output or src_path.with_suffix("").name
     with tempfile.NamedTemporaryFile("w", suffix=".ll", delete=not keep) as f:
         f.write(ir)
         f.flush()

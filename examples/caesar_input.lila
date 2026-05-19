@@ -1,0 +1,37 @@
+fn main() -> int {
+    
+    // println("input length: ");
+    // int len = read_i32();
+
+    println("shift: ");
+    int shift = read_i32();
+
+    char msg[256];
+    println("input your message:");
+    int i = 0;
+    char ch = read_char();
+    while ch != '.' && i < 255 {
+        msg[i] = ch;
+        i++;
+        ch = read_char();
+    }
+
+    for int i in 0..i {
+        int c = msg[i] as int;
+        if c < ('a' as int) {
+            print(msg[i]);
+            continue;
+        }
+        if c > ('z' as int) {
+            print(msg[i]);
+            continue;
+        }
+        int shifted = ((c - ('a' as int) + shift) % 26) + ('a' as int);
+        msg[i] = shifted as char;
+        print(msg[i]);
+    }
+    println("");
+    return 0;
+
+
+}

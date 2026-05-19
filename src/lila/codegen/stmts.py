@@ -127,11 +127,12 @@ def _lower_dowhile(s: A.DoWhile, fb) -> None:
 def _lower_for(s: A.For, fb) -> None:
     from lila.sema.semantic import resolve_typeref
     t = resolve_typeref(s.var_type_node)
-    # use unique slot to avoid collision if same name used in outer scope
+    start_v = lower_expr_rvalue(s.start, fb)
+    end_v = lower_expr_rvalue(s.end, fb)
     slot_name = f"%for.{s.var_name}.{fb._lbl}.addr"
     fb.body.append(f"  {slot_name} = alloca {T.llvm_repr(t)}")
+    prev_binding = fb.locals.get(s.var_name)
     fb.locals[s.var_name] = (slot_name, t)
-    start_v = lower_expr_rvalue(s.start, fb)
     fb.body.append(f"  store {T.llvm_repr(t)} {start_v}, ptr {slot_name}")
     cond_lbl = fb.fresh_label("for.cond")
     body_lbl = fb.fresh_label("for.body")
@@ -141,7 +142,6 @@ def _lower_for(s: A.For, fb) -> None:
     fb.body.append(f"{cond_lbl}:")
     cur = fb.fresh_tmp()
     fb.body.append(f"  {cur} = load {T.llvm_repr(t)}, ptr {slot_name}")
-    end_v = lower_expr_rvalue(s.end, fb)
     cmp = fb.fresh_tmp()
     cc = "slt" if T.is_signed_int(t) else "ult"
     fb.body.append(f"  {cmp} = icmp {cc} {T.llvm_repr(t)} {cur}, {end_v}")
@@ -160,3 +160,7 @@ def _lower_for(s: A.For, fb) -> None:
     fb.body.append(f"  store {T.llvm_repr(t)} {new_v}, ptr {slot_name}")
     fb.body.append(f"  br label %{cond_lbl}")
     fb.body.append(f"{exit_lbl}:")
+    if prev_binding is None:
+        fb.locals.pop(s.var_name, None)
+    else:
+        fb.locals[s.var_name] = prev_binding
