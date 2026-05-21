@@ -15,7 +15,7 @@ def lila_run(example: str, stdin: str = "") -> subprocess.CompletedProcess:
 
 
 def test_bubble_sort_outputs_sorted():
-    r = lila_run("bubble_sort.lila")
+    r = lila_run("bubble_sort_test.lila")
     assert r.returncode == 0, r.stderr
     nums = [int(x) for x in r.stdout.strip().splitlines()]
     assert nums == sorted(nums)

@@ -27,7 +27,7 @@ def test_cli_emits_tokens(tmp_path: Path):
     src.write_text("fn main() -> int { return 0; }")
     r = run_cli(
         str(src),
-        "--emit=tokens",
+        "--tokens",
         "-o",
         "-",
         cwd=str(Path(__file__).resolve().parent.parent.parent),
@@ -41,7 +41,7 @@ def test_cli_emits_ast(tmp_path: Path):
     src.write_text("fn main() -> int { return 7; }")
     r = run_cli(
         str(src),
-        "--emit=ast",
+        "--ast",
         "-o",
         "-",
         cwd=str(Path(__file__).resolve().parent.parent.parent),
@@ -57,7 +57,7 @@ def test_cli_emits_ir(tmp_path: Path):
     out = tmp_path / "p.ll"
     r = run_cli(
         str(src),
-        "--emit=ir",
+        "--ir",
         "-o",
         str(out),
         cwd=str(Path(__file__).resolve().parent.parent.parent),
@@ -85,7 +85,7 @@ def test_cli_emit_exe_runs(tmp_path: Path):
     out = tmp_path / "p"
     r = run_cli(
         str(src),
-        "--emit=exe",
+        "--exe",
         "-o",
         str(out),
         cwd=str(Path(__file__).resolve().parent.parent.parent),

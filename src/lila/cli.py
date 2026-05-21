@@ -16,12 +16,12 @@ from lila.diagnostics import CompileError
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="lila", description="LILA compiler")
     parser.add_argument("input", help="path to .lila source")
-    parser.add_argument(
-        "--emit",
-        default="ir",
-        choices=["tokens", "ast", "ir", "obj", "exe"],
-        help="output stage (default: ir)",
-    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--tokens", action="store_true", help="emit token stream")
+    group.add_argument("--ast", action="store_true", help="emit AST")
+    group.add_argument("--ir", action="store_true", help="emit LLVM IR (default)")
+    group.add_argument("--obj", action="store_true", help="emit object file")
+    group.add_argument("--exe", action="store_true", help="emit executable")
     parser.add_argument(
         "-o", "--output", default=None, help="output path; `-` for stdout"
     )
@@ -39,21 +39,20 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        if args.emit == "tokens":
+        if args.tokens:
             return _emit_tokens(source, src_path, args.output)
-        ast = _parse(source, src_path)
-        if args.emit == "ast":
-            return _emit_ast(ast, args.output, src_path)
-        program, _ = analyze(ast)
+        ast_node = _parse(source, src_path)
+        if args.ast:
+            return _emit_ast(ast_node, args.output, src_path)
+        program, _ = analyze(ast_node)
         ir = emit_ir(program)
         if args.run:
             return _run(ir)
-        if args.emit == "ir":
-            return _write(ir, args.output, default_ext=".ll", src_path=src_path)
-        if args.emit == "obj":
+        if args.obj:
             return _emit_obj(ir, args.output, src_path)
-        if args.emit == "exe":
+        if args.exe:
             return _emit_exe(ir, args.output, src_path, args.keep_temps)
+        return _write(ir, args.output, default_ext=".ll", src_path=src_path)
     except CompileError as e:
         if not e.path:
             e.path = str(src_path)
