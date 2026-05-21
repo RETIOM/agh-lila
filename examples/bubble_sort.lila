@@ -25,10 +25,20 @@ fn main() -> int {
     xs[6] = 7;
     xs[7] = 4;
 
+    println("Before:");
+    for int i in 0..8 {
+        print(xs[i]);
+        print(" ");
+    }
+    println();
+
     bubble_sort(xs);
 
+    println("After:");
     for int i in 0..8 {
-        println(xs[i]);
+        print(xs[i]);
+        print(" ");
     }
+
     return 0;
 }

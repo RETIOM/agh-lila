@@ -1,0 +1,7 @@
+fn main() -> int {
+    int year = 2026;
+
+    print("Hello, World! ");
+    print(year);
+    println();
+}

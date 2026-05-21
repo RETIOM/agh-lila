@@ -1,0 +1,16 @@
+fn powi(int num, int pow) -> int {
+    int res = 1;
+    for int i in 0..pow {
+        res *= num;
+    }
+    return res;
+}
+
+fn main() -> int {
+    int num = 3;
+    int pow = powi(num, 4);
+
+    println(pow);
+
+    return 0;
+}
