@@ -183,6 +183,25 @@ def test_print_f64():
     assert r.stdout.strip() == "3.5"
 
 
+def test_compound_assignment_operators():
+    src = (
+        "fn main() -> int {\n"
+        "  int x = 10;\n"
+        "  x += 3;\n"
+        "  x -= 1;\n"
+        "  x *= 4;\n"
+        "  x /= 3;\n"
+        "  x %= 5;\n"
+        "  return x;\n"
+        "}\n"
+    )
+    # 10+3=13, 13-1=12, 12*4=48, 48/3=16, 16%5=1
+    ir = compile_to_ir(src)
+    assert_valid_ir(ir)
+    r = subprocess.run(["lli", "-"], input=ir, capture_output=True, text=True)
+    assert r.returncode == 1
+
+
 def test_recursive_array_sum():
     ir = compile_to_ir(
         "fn sum(int xs[5], int i, int n) -> int {\n"

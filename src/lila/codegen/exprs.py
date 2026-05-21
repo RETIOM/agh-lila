@@ -258,10 +258,29 @@ def _lower_cast(e: A.Cast, fb) -> str:
     raise CompileError(f"unhandled cast {src} -> {dst}")
 
 
+_COMPOUND_OP = {"+=": "+", "-=": "-", "*=": "*", "/=": "/", "%=": "%"}
+
+
 def _lower_assign(e: A.Assign, fb) -> str:
     rhs = lower_expr_rvalue(e.value, fb)
     addr = lower_lvalue_addr(e.target, fb)
-    fb.body.append(f"  store {T.llvm_repr(e.target.type)} {rhs}, ptr {addr}")
+    ty = e.target.type
+    if e.op != "=":
+        binop = _COMPOUND_OP[e.op]
+        old = fb.fresh_tmp()
+        fb.body.append(f"  {old} = load {T.llvm_repr(ty)}, ptr {addr}")
+        tmp = fb.fresh_tmp()
+        if T.is_float(ty):
+            opname = {"+": "fadd", "-": "fsub", "*": "fmul", "/": "fdiv", "%": "frem"}[binop]
+        elif binop == "/":
+            opname = "sdiv" if T.is_signed_int(ty) else "udiv"
+        elif binop == "%":
+            opname = "srem" if T.is_signed_int(ty) else "urem"
+        else:
+            opname = {"+": "add", "-": "sub", "*": "mul"}[binop]
+        fb.body.append(f"  {tmp} = {opname} {T.llvm_repr(ty)} {old}, {rhs}")
+        rhs = tmp
+    fb.body.append(f"  store {T.llvm_repr(ty)} {rhs}, ptr {addr}")
     return rhs
 
 
