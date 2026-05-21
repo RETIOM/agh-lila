@@ -118,7 +118,8 @@ class LILALexer(object):
         t.lexer.lineno += len(t.value)
 
     def t_error(self, t):
-        print(f"Illegal character '{t.value[0]}'")
+        col = t.lexpos - t.lexer.lexdata.rfind('\n', 0, t.lexpos)
+        print(f"<input>:{t.lineno}:{col}: error: illegal character '{t.value[0]}'")
         t.lexer.skip(1)
 
     def build(self, **kwargs):

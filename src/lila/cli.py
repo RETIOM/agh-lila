@@ -59,7 +59,9 @@ def main(argv: list[str] | None = None) -> int:
         print(str(e), file=sys.stderr)
         return 1
     except SyntaxError as e:
-        print(f"{src_path}: syntax error: {e}", file=sys.stderr)
+        lineno = getattr(e, 'lineno', 0) or 0
+        col = getattr(e, 'col', 0) or 0
+        print(f"{src_path}:{lineno}:{col}: error: {e.args[0]}", file=sys.stderr)
         return 1
     return 0
 

@@ -491,7 +491,11 @@ def p_arg_list_many(p):
 
 def p_error(p):
     if p:
-        raise SyntaxError(f"syntax error at '{p.value}' on line {p.lineno}")
+        col = p.lexpos - p.lexer.lexdata.rfind('\n', 0, p.lexpos)
+        e = SyntaxError(f"syntax error at '{p.value}'")
+        e.lineno = p.lineno
+        e.col = col
+        raise e
     # EOF with no input: grammar requires at least one declaration,
     # so return None via the normal PLY mechanism.
     return None
