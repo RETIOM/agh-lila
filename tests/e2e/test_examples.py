@@ -15,7 +15,7 @@ def lila_run(example: str, stdin: str = "") -> subprocess.CompletedProcess:
 
 
 def test_bubble_sort_outputs_sorted():
-    r = lila_run("bubble_sort_test.lila")
+    r = lila_run("algo/bubble_sort_test.lila")
     assert r.returncode == 0, r.stderr
     nums = [int(x) for x in r.stdout.strip().splitlines()]
     assert nums == sorted(nums)
@@ -23,20 +23,20 @@ def test_bubble_sort_outputs_sorted():
 
 
 def test_stalin_sort_keeps_nondecreasing_elements():
-    r = lila_run("stalin_sort.lila")
+    r = lila_run("algo/stalin_sort.lila")
     assert r.returncode == 0, r.stderr
     nums = [int(x) for x in r.stdout.strip().splitlines()]
     assert nums == [3, 4, 5, 9]
 
 
 def test_slow_sort_outputs_sorted_array():
-    r = lila_run("slow_sort.lila")
+    r = lila_run("algo/slow_sort.lila")
     assert r.returncode == 0, r.stderr
     nums = [int(x) for x in r.stdout.strip().splitlines()]
     assert nums == [1, 2, 3, 4, 5, 6]
 
 
 def test_caesar_shifts_lowercase_letters():
-    r = lila_run("caesar.lila")
+    r = lila_run("algo/caesar.lila")
     assert r.returncode == 0, r.stderr
     assert r.stdout == "khoor!\n"
