@@ -5,17 +5,27 @@ description = "LILA - Light Intermediate Language Architecture"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "fastapi>=0.136.3",
+    "httpx>=0.28.1",
     "ply>=3.11",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+web = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+pythonpath = ["."]
 
 [project.scripts]
 lila = "lila.cli:main"

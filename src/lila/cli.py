@@ -71,6 +71,10 @@ def _parse(source: str, src_path: Path):
     lx.build()
     parser = build_parser()
     ast = parser.parse(source, lexer=lx.lexer)
+    if lx.errors:
+        err = lx.errors[0]
+        err.path = str(src_path)
+        raise err
     if ast is None:
         raise SyntaxError("empty program or parse failure")
     return ast
@@ -92,6 +96,10 @@ def _emit_tokens(source: str, src_path: Path, output: str | None) -> int:
     lines = []
     for tok in iter(lx.lexer.token, None):
         lines.append(f"{tok.type}\t{tok.value!r}\tline={tok.lineno}")
+    if lx.errors:
+        err = lx.errors[0]
+        err.path = str(src_path)
+        raise err
     return _write("\n".join(lines) + "\n", output, ".tok", src_path)
 
 

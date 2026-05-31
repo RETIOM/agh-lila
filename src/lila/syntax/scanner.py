@@ -1,5 +1,6 @@
 import ply.lex as lex
 from lila.syntax.tokens import tokens
+from lila.diagnostics import CompileError
 
 
 class LILALexer(object):
@@ -118,9 +119,14 @@ class LILALexer(object):
         t.lexer.lineno += len(t.value)
 
     def t_error(self, t):
-        col = t.lexpos - t.lexer.lexdata.rfind('\n', 0, t.lexpos)
-        print(f"<input>:{t.lineno}:{col}: error: illegal character '{t.value[0]}'")
+        col = t.lexpos - t.lexer.lexdata.rfind("\n", 0, t.lexpos)
+        self.errors.append(
+            CompileError(
+                f"illegal character '{t.value[0]}'", lineno=t.lineno, col=col
+            )
+        )
         t.lexer.skip(1)
 
     def build(self, **kwargs):
+        self.errors: list[CompileError] = []
         self.lexer = lex.lex(module=self, **kwargs)

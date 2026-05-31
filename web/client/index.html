@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LILA Playground</title>
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <h1>LILA</h1>
+        <div id="examples"></div>
+        <div id="sidebar-controls">
+          <label><input type="checkbox" id="vim-checkbox" /> Vim mode</label>
+          <label><input type="checkbox" id="dark-checkbox" /> Dark mode</label>
+        </div>
+      </aside>
+      <div class="resize-handle" id="resize-left"></div>
+      <main id="editor-pane">
+        <div id="editor-toolbar"><button id="run-btn">▶ Run</button></div>
+        <div id="editor"></div>
+      </main>
+      <div class="resize-handle" id="resize-right"></div>
+      <section id="output-pane">
+        <nav id="tabs">
+          <button data-tab="tokens">Tokens</button>
+          <button data-tab="ast">AST</button>
+          <button data-tab="ir">LLVM IR</button>
+          <button data-tab="run" class="active">Run</button>
+        </nav>
+        <div id="tab-content"></div>
+      </section>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
