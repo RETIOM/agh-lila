@@ -102,3 +102,13 @@ def test_cli_reports_syntax_error_with_location(tmp_path: Path):
     assert r.returncode != 0
     assert "syntax error" in r.stderr.lower()
     assert "bad.lila" in r.stderr
+
+
+def test_cli_reports_illegal_char(tmp_path: Path):
+    src = tmp_path / "bad.lila"
+    src.write_text("fn main() -> int {\n    @\n    return 0;\n}")
+    r = run_cli(str(src), cwd=str(Path(__file__).resolve().parent.parent.parent))
+    assert r.returncode != 0
+    assert "illegal character" in r.stderr
+    assert "'@'" in r.stderr
+    assert "bad.lila" in r.stderr
