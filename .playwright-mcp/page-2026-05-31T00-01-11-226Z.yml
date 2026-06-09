@@ -1,0 +1,61 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - heading "LILA" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - button "✎ Scratch" [ref=e6] [cursor=pointer]
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: algo
+          - button "bubble_sort" [ref=e10] [cursor=pointer]
+          - button "bubble_sort_test" [ref=e11] [cursor=pointer]
+          - button "caesar" [ref=e12] [cursor=pointer]
+          - button "caesar_input" [ref=e13] [cursor=pointer]
+          - button "slow_sort" [ref=e14] [cursor=pointer]
+          - button "stalin_sort" [ref=e15] [cursor=pointer]
+        - generic [ref=e16]:
+          - generic [ref=e17]: errs
+          - button "compile_err" [ref=e18] [cursor=pointer]
+          - button "illegal_char" [ref=e19] [cursor=pointer]
+          - button "syntax_err" [ref=e20] [cursor=pointer]
+        - generic [ref=e21]:
+          - generic [ref=e22]: trivial
+          - button "hello_world" [ref=e23] [cursor=pointer]
+          - button "simple" [ref=e24] [cursor=pointer]
+    - generic [ref=e25]:
+      - generic [ref=e26] [cursor=pointer]:
+        - checkbox "Vim mode" [ref=e27]
+        - text: Vim mode
+      - generic [ref=e28] [cursor=pointer]:
+        - checkbox "Dark mode" [checked] [ref=e29]
+        - text: Dark mode
+  - main [ref=e31]:
+    - button "▶ Run" [ref=e33]
+    - generic [ref=e36]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: "1"
+        - generic [ref=e40]: "2"
+        - generic [ref=e41]: "3"
+        - generic [ref=e42]: "4"
+        - generic [ref=e43]: "5"
+        - generic [ref=e44]: "6"
+        - generic [ref=e45]: "7"
+        - generic [ref=e46]: "8"
+        - generic [ref=e47]: "9"
+        - generic [ref=e48]: "10"
+        - generic [ref=e49]: "11"
+      - textbox [ref=e54]:
+        - generic [ref=e55]: "fn test() -> int {"
+        - generic [ref=e57]: "}"
+        - generic [ref=e59]: "fn main() -> int {"
+        - generic [ref=e60]: println("Hello, LILA!");
+        - generic [ref=e61]: return 0;
+        - generic [ref=e62]: "}"
+  - generic [ref=e67]:
+    - navigation [ref=e68]:
+      - button "Tokens" [ref=e69] [cursor=pointer]
+      - button "AST" [ref=e70] [cursor=pointer]
+      - button "LLVM IR" [ref=e71] [cursor=pointer]
+      - button "Run" [ref=e72] [cursor=pointer]
+    - generic [ref=e73]:
+      - text: stdin
+      - textbox "input passed to the program" [ref=e74]
