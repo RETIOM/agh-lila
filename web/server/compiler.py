@@ -150,10 +150,10 @@ def run_program(source: str, stdin: str = "", timeout: float = 5.0) -> dict:
         path = f.name
     try:
         proc = subprocess.run(
-            ["lli", path], input=stdin, capture_output=True, text=True, timeout=timeout
+            ["lli", path], input=stdin.encode(), capture_output=True, timeout=timeout
         )
         return {
-            "stdout": proc.stdout, "stderr": proc.stderr,
+            "stdout": _decode_output(proc.stdout), "stderr": _decode_output(proc.stderr),
             "exit_code": proc.returncode, "timed_out": False, "diagnostics": [],
         }
     except subprocess.TimeoutExpired as e:

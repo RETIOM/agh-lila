@@ -31,114 +31,6 @@ Kompilator języka do kodu LLVM IR w formacie tekstowym `.ll`. Wygenerowany kod 
 
 ---
 
-## Krótka instrukcja obsługi
-
-### Wymagania
-
-- Python 3.14+
-- [`uv`](https://github.com/astral-sh/uv) lub `pip`
-- LLVM (`llc`, `clang`, `lli`) — wymagane tylko do kompilacji do pliku obiektowego / wykonywalnego / uruchomienia JIT
-
-### Instalacja
-
-```bash
-# sklonuj repozytorium, następnie:
-uv sync          # tworzy .venv i instaluje zależności
-# lub:
-pip install -e .
-```
-
-### Użycie
-
-```
-lila <plik.lila> [--tokens | --ast | --ir | --obj | --exe] [-o WYJŚCIE] [--run]
-```
-
-| Flaga | Opis |
-|---|---|
-| `--tokens` | Wypisz strumień tokenów |
-| `--ast` | Wypisz drzewo składniowe (AST) |
-| `--ir` | Generuj LLVM IR (`.ll`) — **domyślne** |
-| `--obj` | Kompiluj do pliku obiektowego (`.o`) przez `llc` |
-| `--exe` | Kompiluj do pliku wykonywalnego przez `clang` |
-| `--run` | Uruchom natychmiast przez JIT (`lli`) zamiast zapisywać plik |
-| `-o PLIK` | Ścieżka pliku wyjściowego; `-` wypisuje na stdout |
-| `--keep-temps` | Nie usuwaj tymczasowych plików `.ll` przy `--exe` |
-
-### Uruchomienie przez `.venv`
-
-```bash
-.venv/bin/lila <plik.lila> [opcje]
-```
-
----
-
-## Przykład użycia
-
-### Sortowanie bąbelkowe (`examples/bubble_sort.lila`)
-
-```lila
-fn main() -> int {
-    int xs[8];
-    xs[0] = 5; xs[1] = 3; xs[2] = 8; xs[3] = 1;
-    xs[4] = 9; xs[5] = 2; xs[6] = 7; xs[7] = 4;
-
-    while true {
-        bool swapped = false;
-        for int i in 0..7 {
-            if xs[i] > xs[i + 1] {
-                int tmp = xs[i];
-                xs[i] = xs[i + 1];
-                xs[i + 1] = tmp;
-                swapped = true;
-            }
-        }
-        if !swapped { break; }
-    }
-
-    for int i in 0..8 {
-        println(xs[i]);
-    }
-    return 0;
-}
-```
-
-**Krok 1 — podgląd tokenów:**
-```bash
-.venv/bin/lila examples/bubble_sort.lila --tokens -o -
-```
-
-**Krok 2 — podgląd AST:**
-```bash
-.venv/bin/lila examples/bubble_sort.lila --ast -o -
-```
-
-**Krok 3 — generowanie LLVM IR (plik `bubble_sort.ll`):**
-```bash
-.venv/bin/lila examples/bubble_sort.lila --ir
-```
-
-**Krok 4 — bezpośrednie uruchomienie przez JIT:**
-```bash
-.venv/bin/lila examples/bubble_sort.lila --run
-# wypisze: 1 2 3 4 5 6 7 8 (każda liczba w nowej linii)
-```
-
-**Krok 5 — kompilacja do pliku wykonywalnego i uruchomienie:**
-```bash
-.venv/bin/lila examples/bubble_sort.lila --exe -o bubble_sort
-./bubble_sort
-```
-
-### Szyfr Cezara (`examples/caesar.lila`)
-
-```bash
-.venv/bin/lila examples/caesar.lila --run
-# wypisze: khoor!
-```
-
----
-
 ## Opis tokenów
 
 | **Nazwa** | **Opis** | **Regex** | **Przykład** |
@@ -419,3 +311,113 @@ arg_list
     : expr
     | arg_list COMMA expr
 ```
+
+---
+
+## Krótka instrukcja obsługi
+
+### Wymagania
+
+- Python 3.14+
+- [`uv`](https://github.com/astral-sh/uv) lub `pip`
+- LLVM (`llc`, `clang`, `lli`) — wymagane tylko do kompilacji do pliku obiektowego / wykonywalnego / uruchomienia JIT
+
+### Instalacja
+
+```bash
+# sklonuj repozytorium, następnie:
+uv sync          # tworzy .venv i instaluje zależności
+# lub:
+pip install -e .
+```
+
+### Użycie
+
+```
+lila <plik.lila> [--tokens | --ast | --ir | --obj | --exe] [-o WYJŚCIE] [--run]
+```
+
+| Flaga | Opis |
+|---|---|
+| `--tokens` | Wypisz strumień tokenów |
+| `--ast` | Wypisz drzewo składniowe (AST) |
+| `--ir` | Generuj LLVM IR (`.ll`) — **domyślne** |
+| `--obj` | Kompiluj do pliku obiektowego (`.o`) przez `llc` |
+| `--exe` | Kompiluj do pliku wykonywalnego przez `clang` |
+| `--run` | Uruchom natychmiast przez JIT (`lli`) zamiast zapisywać plik |
+| `-o PLIK` | Ścieżka pliku wyjściowego; `-` wypisuje na stdout |
+| `--keep-temps` | Nie usuwaj tymczasowych plików `.ll` przy `--exe` |
+
+### Uruchomienie przez `.venv`
+
+```bash
+.venv/bin/lila <plik.lila> [opcje]
+```
+
+---
+
+## Przykład użycia
+
+### Sortowanie bąbelkowe (`examples/bubble_sort.lila`)
+
+```lila
+fn main() -> int {
+    int xs[8];
+    xs[0] = 5; xs[1] = 3; xs[2] = 8; xs[3] = 1;
+    xs[4] = 9; xs[5] = 2; xs[6] = 7; xs[7] = 4;
+
+    while true {
+        bool swapped = false;
+        for int i in 0..7 {
+            if xs[i] > xs[i + 1] {
+                int tmp = xs[i];
+                xs[i] = xs[i + 1];
+                xs[i + 1] = tmp;
+                swapped = true;
+            }
+        }
+        if !swapped { break; }
+    }
+
+    for int i in 0..8 {
+        println(xs[i]);
+    }
+    return 0;
+}
+```
+
+**Krok 1 — podgląd tokenów:**
+```bash
+.venv/bin/lila examples/bubble_sort.lila --tokens -o -
+```
+
+**Krok 2 — podgląd AST:**
+```bash
+.venv/bin/lila examples/bubble_sort.lila --ast -o -
+```
+
+**Krok 3 — generowanie LLVM IR (plik `bubble_sort.ll`):**
+```bash
+.venv/bin/lila examples/bubble_sort.lila --ir
+```
+
+**Krok 4 — bezpośrednie uruchomienie przez JIT:**
+```bash
+.venv/bin/lila examples/bubble_sort.lila --run
+# wypisze: 1 2 3 4 5 6 7 8 (każda liczba w nowej linii)
+```
+
+**Krok 5 — kompilacja do pliku wykonywalnego i uruchomienie:**
+```bash
+.venv/bin/lila examples/bubble_sort.lila --exe -o bubble_sort
+./bubble_sort
+```
+
+### Szyfr Cezara (`examples/caesar.lila`)
+
+```bash
+.venv/bin/lila examples/caesar.lila --run
+# wypisze: khoor!
+```
+
+
